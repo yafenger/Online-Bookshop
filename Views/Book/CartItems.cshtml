@@ -1,0 +1,122 @@
+﻿@model IEnumerable<Bookshop_CATeam11.Models.CartItemsViewModel>
+@{
+    ViewBag.Title = "Cart Items";
+    decimal? totalAmt = 0;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h5><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</h5>
+                            </div>
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-primary btn-sm btn-block" onclick="location.href='@Url.Action("Index","Book")'">
+                                    <span class="glyphicon glyphicon-share-alt"></span> Continue shopping
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form method="get" action="/Book/removeCart">
+                    <input type="hidden" name="memberID" value="@ViewBag.MemberID" />
+                    @foreach (var cart in Model)
+                    {
+                        totalAmt += cart.Price * cart.Quantity;
+                        <input type="hidden" name="cartId" value="@cart.CartID" />
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    @{
+                                        string imgsrc = "";
+                                        if (cart.Cover != null)
+                                        {
+                                            var base64 = Convert.ToBase64String(cart.Cover);
+                                            imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                                        }
+                                    }
+                                    <img class="img-responsive" src="@imgsrc" alt="@cart.Title">
+                                </div>
+                                <div class="col-xs-4">
+                                    <h4 class="product-name"><strong>@cart.Title</strong></h4><h4><small>@cart.Author</small></h4>
+                                </div>
+                                <div class="col-xs-6 carts_@cart.CartID">
+                                    <div class="col-xs-6 text-right">
+                                        <h6><strong>@cart.Price <span class="text-muted">x</span></strong></h6>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control input-sm" id="Quantity" name="Quantity" value="@cart.Quantity">
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button type="submit" class="btn btn-link btn-xs">
+                                            <span class="glyphicon glyphicon-trash"> </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    }
+                    <div class="panel-footer amtFooter">
+                        <div class="row text-center">
+                            <div class="col-xs-9">
+                                <h4 class="text-right">Total <strong style="display:none;" id="strikeAmt"><s>$@totalAmt</s></strong> $<strong id="totalAmt">@totalAmt</strong></h4>
+                            </div>
+                            <div class="col-xs-3">
+                                <button type="button" id="btnCheckout" class="btn btn-success btn-block">
+                                    Checkout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $(document).ready(function () {
+        var viewModel = @Html.Raw(Json.Encode(Model));
+            if (viewModel.length) {
+                $.ajax({
+                    url: "@Url.Action("checkDiscountPrice", "Book")", success: function (result) {
+                        if (result > 0) {
+                            $("#strikeAmt").show();
+                            var Oamt = $("#totalAmt").html();
+                            result = ((100 - result) / 100) * Oamt;
+                            $("#totalAmt").html(result);
+                        } else {
+                            $("#strikeAmt").hide();
+                        }
+                    },
+                    error: function (result) {
+                        alert("An error has occured.");
+                    }
+                });
+            }
+            $("#btnCheckout").click(function () {
+                for (var i = 0; i < viewModel.length; i++) {
+                    viewModel[i].Quantity = $(".carts_" + viewModel[i].CartID + " div:eq(1) #Quantity").val();
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: "/Book/Checkout",
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify({ 'viewModel': viewModel }),
+                    success: function (data) {
+                        alert('Successfully added');
+                    },
+                    error: function (xhr, ajaxOptions, error) {
+                        alert(xhr.status);
+                    }
+                });
+            });
+        
+    });
+</script>

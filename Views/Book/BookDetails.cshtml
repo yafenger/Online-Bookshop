@@ -1,0 +1,68 @@
+﻿
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .image {
+            padding-top: 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .zoom {
+            transition: transform .2s; /* Animation */
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+
+            .zoom:hover {
+                transform: scale(2); /* 200% zoom */
+            }
+    </style>
+
+    @{ var book = ViewBag.Book;}
+
+    <div class="container">
+        <h2>@book.Title</center></h2>
+
+        <div class="row">
+            <div class="col-md-6 image">
+                <figure>
+                    @{
+                        string imgsrc = "";
+                        if (book.Cover != null)
+                        {
+                            var base64 = Convert.ToBase64String(book.Cover);
+                            imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                        }
+                    }
+                    <img src='@imgsrc' class="zoom" width="150" height="200" />
+                </figure>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <tr>
+                        <td>ID</td>
+                        <td>@book.BookID</td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td>@book.CategoryID</td>
+                    </tr>
+                    <tr>
+                        <td>ISBN</td>
+                        <td>@book.ISBN</td>
+                    </tr>
+                    <tr>
+                        <td>Author</td>
+                        <td>@book.Author</td>
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td>@book.Price</td>
+                    </tr>
+                </table>
+                <button type="button" class="btn btn-primary btn-sm btn-block" onclick="location.href='@Url.Action("CartItems", "Book",new { bookid=@ViewBag.book.BookID})'">Add to cart</button>
+            </div>
+        </div>
+    </div>

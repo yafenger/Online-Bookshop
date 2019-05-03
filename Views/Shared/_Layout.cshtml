@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/HomeStyleSheet.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Books", "Index", "Book")</li>
+                    <li>@Html.ActionLink("Promotions", "Promotion", "Home", null, new { @class = "" })</li>
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li>@Html.ActionLink("Maintain Roles", "Index", "Role")</li>
+                        }
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Maintain Promotion", "Index", "MaintainPromotion", null, new { @class = "" })</li>
+                            <li>@Html.ActionLink("Maintain Book", "EditBookInfo", "Book", null, new { @class = "" })</li>
+
+                        }
+                        if (User.IsInRole("User"))
+                        {
+                            <li>@Html.ActionLink("Shopping Cart", "CartItems", "Book", null, new { @id = "cart-count", @class = "" })</li>
+                        }
+                    }
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                    <li>@Html.ActionLink("Event", "Events", "Home", null, new { @class = "" })</li>
+                    <li>@Html.ActionLink("Stores", "OurStores", "Home", null, new { @class = "" })</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <span style="font-size: 84px; color: dodgerblue;">
+                <i class="fab fa-cc-visa" style="font-size:50px"></i>
+
+                <span style="font-size: 84px; color: orangered;">
+                    <i class="fab fa-cc-mastercard" style="font-size:50px"></i>
+
+                    <span style="font-size: 84px; color: cornflowerblue;">
+                        <i class="fab fa-cc-amex" style="font-size:50px"></i>
+
+                        <span style="font-size: 84px; color: steelblue;">
+                            <i class="fab fa-cc-paypal" style="font-size:50px"></i>
+                        </span>
+                    </span>
+                </span>
+            </span>
+            <p>&copy; @DateTime.Now.Year - Amanda Books</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: "@Url.Action("CartCount", "Book")", success: function(result){
+                    $("#cart-count").html("(" + result + ") " + "Shopping Cart");
+                    }});
+        });
+    </script>
+</body>
+</html>

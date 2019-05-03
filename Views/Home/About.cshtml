@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .responsive {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<h1 style="color:darkred;">About Us</h1>
+<img src="~/Images/AboutUs.jpg" class="responsive" />
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+    ul.timeline {
+        list-style-type: none;
+        position: relative;
+    }
+
+        ul.timeline:before {
+            content: ' ';
+            background: #d4d9df;
+            display: inline-block;
+            position: absolute;
+            left: 29px;
+            width: 2px;
+            height: 100%;
+            z-index: 400;
+        }
+
+        ul.timeline > li {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+            ul.timeline > li:before {
+                content: ' ';
+                background: white;
+                display: inline-block;
+                position: absolute;
+                border-radius: 50%;
+                border: 3px solid #22c0e8;
+                left: 20px;
+                width: 20px;
+                height: 20px;
+                z-index: 400;
+            }
+</style>
+<!------ Include the above in your HEAD tag ---------->
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            
+            <ul class="timeline">
+                <li>
+                    Amanda Online BookStore
+                    November, 2018
+                    <p>Online bookshop can give customers better experience.</p>
+                </li>
+                <li>
+                    Amanda BookStore Three Open
+                    21 March, 2013
+                    <p>Bugis Junction which is our third store is based on customers' preferences.</p>
+                </li>
+                <li>
+                    Amanda BookStore Two Open
+                    21 March, 2011
+                    <p>Based on the sucessful opening at Jem, the second store at Liang Court was opened.</p>
+                </li>
+                <li>
+                    Amanda BookStore One Opene
+                    4 March, 2010
+                    <p>Amanda Books has become a chain store which open bookshops all around Singapore.</p>
+                </li>
+                <li>
+                    Amanda Main BookStore Open
+                    1 April, 2008
+                    <p>The first shop opened in 2008 and is located on Orchard Road.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

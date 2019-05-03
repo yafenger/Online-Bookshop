@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Bookshop_CATeam11.Models.Promotion>
+@{
+    ViewBag.Title = "Promotion";
+}
+
+<h1 style="color:darkred;">Current Promotions</h1>
+
+    <style>
+        .responsive {
+            width: 100%;
+            height: auto;
+        }
+        ul li {
+        list-style-type:none;
+        }
+    </style>
+    <div>
+        @foreach (var item in Model)
+        {
+
+            <table>
+
+                <tr>
+                    <td>
+                        <p class="lead">
+                            <mark>
+                                Members get
+                                @Html.DisplayFor(modelItem => item.Discount_Price) % off (Storewide)<br />
+                            </mark>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="lead">
+                            <mark>
+                                from
+                                @Convert.ToDateTime(item.Start_Time).ToString("dd MMM yyyy")<br />
+                            </mark>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="lead">
+                            <mark>
+                                to
+                                @Convert.ToDateTime(item.End_Time).ToString("dd MMM yyyy")!
+                            </mark>
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+
+        }
+    </div>
+<div class="jumbotron">
+    <h1>BLACK FRIDAY SALES</h1>
+    <p class="lead"><mark>Members can get 20% off (Storewide)</mark></p>
+    <img src="~/Images/Promotion.png" class="responsive" />
+</div>
+<div class="container">
+    <div class="row">
+
+        <h5><b>Top 1 Best Seller</b></h5><br />
+        <div>
+
+            @foreach (var item in ViewBag.promoBooks)
+            {
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                @{
+                    string imgsrc = "";
+                    if (item.Cover != null)
+                    {
+                        var base64 = Convert.ToBase64String(item.Cover);
+                        imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                    }
+                }
+                <img class="img-responsive" src="@imgsrc" alt="@item.Title">
+                <ul>
+
+                    @*<img src="@(String.Format("../../Images/{0}.jpg",item.ISBN))" />*@
+
+
+
+                    <li>Title: <label>@item.Title</label></li>
+                    <li>Category: <label>@item.CategoryName</label></li>
+                    <li> Author: <label>@item.Author</label></li>
+                    <li> Price: <label>@item.Price</label></li>
+                    <li>
+                        <a href="/Book/Show?ID=@item.BookID">Details</a>
+                    </li>
+
+                </ul>
+            </div>
+            }
+        </div>
+    </div>
+    </div>
+

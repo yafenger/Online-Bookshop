@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Bookshop_CATeam11.Models.Book>
+@{
+    ViewBag.Title = "ResultsNotFound";
+}
+@{
+    var bks = Model;
+    var displayedBooks = ViewBag.randomBooks;
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+    .class1 {
+        width: 100px;
+        height: 20px;
+        background-color: white;
+        font-display: auto;
+        border-radius: 10px/20px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .class2 {
+        width: 150px;
+        height: 30px;
+        color: black;
+        background-color: azure;
+        font-display: auto;
+        border-radius: 10px/20px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    lable {
+    }
+</style>
+
+<div>
+    <h2>Sorry! No results have been found! </h2>
+</div>
+<br />
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div>
+            <h2>You may like this:</h2>
+            <div>
+                @if (bks != null)
+                {
+                    foreach (var b in bks)
+                    {
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <p>
+                                @{
+                                    string imgsrc = "";
+                                    if (b.Cover != null)
+                                    {
+                                        var base64 = Convert.ToBase64String(b.Cover);
+                                        imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                                    }
+                                }
+                                <img class="img-responsive" src="@imgsrc" alt="@b.Title" width="150" height="200">
+                            </p>
+
+                            <p class="class1" align="center">
+                               @b.Title
+                            </p>
+
+                            <p class="class1" align="center">
+
+                               $@b.Price
+                             </p>
+                            <p class="class2" align="center">
+                              @Html.ActionLink("Details", "Show", new { ID = @b.BookID })
+                            </p>
+                         </div>
+                    }
+                }
+                else
+                {
+                    foreach (var b in displayedBooks)
+                    {
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <p>
+                                <img src="@(String.Format("../../Images/{0}.jpg", b.ISBN))" width="300" height="300" />
+                            </p>
+
+                            <p class="class1" align="center">
+
+                                @b.Title
+                            </p>
+
+                            <p class="class1" align="center">
+
+                                $@b.Price
+                            </p>
+                            <p class="class2" align="center">
+                                @Html.ActionLink("Details", "Show", new { ID = @b.BookID })
+                            </p>
+                        </div>
+                    }
+                }
+
+            </div>
+    </div>
+</div>
+    </div>

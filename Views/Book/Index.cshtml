@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<h2 style="color:red;">@TempData["info"]</h2>
+<h2>All Books Here</h2>
+
+<p>
+    View <a href="~/Book/Children">Children</a>. books here
+</p>
+<p>
+    View <a href="~/Book/Nonfict">Non Fictional</a>. books here
+</p>
+<p>
+    View <a href="~/Book/Tech">Technical</a>. books here
+</p>
+<p>
+    View <a href="~/Book/Fin">Finance</a>. books here
+</p>
+<div class="row">
+    @{
+        if (ViewBag.CustList != null)
+        {
+            for (int i = 0; i < ViewBag.CustList.Count; i++)
+            {
+
+                <div class="col-xs-12 col-sm-6 col-md-4">
+
+                    <table>
+                        <tr>
+                            <td>
+                                @{
+                                    string imgsrc = "";
+                                    if (ViewBag.CustList[i].Cover != null)
+                                    {
+                                        var base64 = Convert.ToBase64String(ViewBag.CustList[i].Cover);
+                                        imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                                    }
+                                }
+                                <img src='@imgsrc' width="150" height="200"/>
+                            </td>
+                        </tr>
+                            <tr>
+                                <td>
+                                    <a href="~/Book/Show/@ViewBag.CustList[i].BookID">
+                                        @ViewBag.CustList[i].Title
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@ViewBag.CustList[i].Author</td>
+                            </tr>
+                    </table>
+                </div>
+
+            }
+        }
+
+    }
+</div>
+
+
+
+

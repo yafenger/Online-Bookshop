@@ -1,0 +1,82 @@
+﻿@*@model Bookshop_CATeam11.Models.Book*@
+@model IEnumerable<Bookshop_CATeam11.Models.Book>
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jqueryFoo.js")"></script>
+}
+
+@{
+    ViewBag.Title = "EditBookInfo";
+}
+
+<h2>EditBookInfo</h2>
+
+<div>
+
+    @Html.ActionLink("New Book Register ", "Maintain", "Book")
+</div>
+
+<div style=" width:600px;">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>BookID</th>
+                <th>Title</th>
+                <th>CategoryID</th>
+                <th>ISBN</th>
+                <th>Author</th>
+                <th>Stock</th>
+                <th>Price</th>
+                <th>Book Cover</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in @Model)
+            {
+                <tr>
+                    <td>@book.BookID</td>
+                    <td>@book.Title</td>
+                    <td>@book.CategoryID</td>
+                    <td>@book.ISBN</td>
+                    <td>@book.Author</td>
+                    <td>@book.Stock</td>
+                    <td>@book.Price</td>
+                    <td>
+                        @{
+                            string imgsrc = "";
+                            if (book.Cover !=null)
+                            {
+                                var base64 = Convert.ToBase64String(book.Cover);
+                                 imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                            }
+
+                        }
+
+                        <img src='@imgsrc' style="max-width:100px;max-height:100px" />
+                    </td>
+                    <td>@Html.ActionLink("Edit", "Edit", "Book", new { id = @book.BookID }, null)</td>
+                    <td>@Html.ActionLink("Delete", "Delete", "Book", new { id = @book.BookID }, null)</td>
+
+
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+   
+
+
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+        </script>
+    }
+</div>
+

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Bookshop_CATeam11.Models.Promotion>
+
+@{
+    ViewBag.Title = "index";
+}
+
+<h2>Maintain Promotion</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Add")
+
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Promotion ID", "index", new { sortOrder = ViewBag.IDSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Discount (%)", "index", new { sortOrder = ViewBag.DiscountSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Start Date", "index", new { sortOrder = ViewBag.StartDateSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("End Date", "index", new { sortOrder = ViewBag.EndDateSortParm })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        using (Html.BeginForm("Delete", "MaintainPromotion", new { id = item.PromotionID }))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PromotionID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Discount_Price)
+                </td>
+                <td>
+                    @Convert.ToDateTime(item.Start_Time).ToString("dd MMM yyyy")
+                </td>
+                <td>
+                    @Convert.ToDateTime(item.End_Time).ToString("dd MMM yyyy")
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PromotionID }) |
+
+                    <input type="submit" value="Delete" 
+                           onclick="return confirm('Are you sure you want to delete record with ID = @item.PromotionID?');"/>
+
+                </td>
+            </tr>
+        }
+    }
+
+</table>
